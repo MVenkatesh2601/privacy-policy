@@ -36,8 +36,8 @@ FinX stores the following categories of information locally on your device:
 - User-defined tags and notes
 - Merchant classification rules
 
-**Information from notifications (with your permission):**
-- When you grant notification access, FinX reads transaction alert notifications from your SMS app to detect and record financial activity automatically.
+**Information detected automatically (with your permission):**
+- When you grant SMS permission or notification access, FinX can detect transaction information from incoming bank and financial SMS messages to automatically identify and record financial activity.
 
 **Application settings:**
 - Display name (optional, stored encrypted)
@@ -47,20 +47,26 @@ FinX stores the following categories of information locally on your device:
 
 ---
 
-## 4. Notification-Based Transaction Detection
+## 4. Automatic Transaction Detection
 
-With your explicit permission, FinX uses Android's Notification Listener Service to read transaction alert notifications sent by your bank, card issuer, or biller through your SMS app. This allows FinX to automatically detect and record transactions, bills, and credit card activity without requiring manual entry.
+With your explicit permission, FinX can automatically detect and record transactions, bills, and credit card activity from incoming financial SMS messages without requiring manual entry.
+
+FinX supports two complementary detection sources:
+- **SMS permission (RECEIVE_SMS):** FinX receives incoming SMS messages from your bank and processes them to detect financial transactions.
+- **Notification access:** FinX reads transaction alert notifications from your SMS app (for example, Google Messages or SMS Organizer) to detect financial activity.
+
+You can enable either or both sources. Automatic tracking works when at least one supported source is enabled. Both sources use the same on-device processing pipeline, and duplicate detection prevents the same transaction from being recorded twice.
 
 How this works:
-- Only notifications from known SMS applications are processed
+- Only incoming financial SMS messages and notifications from trusted SMS applications are processed
 - Non-financial messages such as OTPs, personal messages, and promotional texts are ignored
 - All parsing and financial data extraction happens entirely on your device
-- You can grant, revoke, or skip notification access at any time from your device settings
-- FinX continues to work with manual entry and pasted SMS if you choose not to grant notification access
+- You can grant or revoke SMS permission and notification access at any time from your device settings
+- FinX continues to work with manual entry and pasted SMS if you choose not to enable automatic detection
 
-**The original notification/SMS text may be stored locally on your device as part of the transaction record for reference and history purposes.**
+**Parsed transaction information may be stored locally on your device as part of your transaction records.**
 
-**FinX does not transmit the original notification/SMS text to FinX servers or third-party servers.**
+**FinX does not transmit SMS content or notification text to FinX servers or third-party servers.**
 
 ---
 
@@ -70,7 +76,7 @@ You can add transactions to FinX manually or by pasting SMS text into the app. W
 
 If you paste SMS text, the resulting transaction record may retain the original text locally on your device for reference purposes.
 
-FinX does not request SMS inbox permissions (such as READ_SMS or RECEIVE_SMS) in the published version of the app and does not access your message history.
+FinX does not read your existing SMS inbox or message history. The SMS permission (RECEIVE_SMS) is used only to receive incoming SMS messages for automatic transaction detection. FinX does not request READ_SMS, which would be required to access stored messages.
 
 ---
 
@@ -195,7 +201,9 @@ Uninstalling FinX removes all local data from your device. Backup files you crea
 
 You have the following choices when using FinX:
 
-- **Notification access** — grant, revoke, or skip notification access at any time. FinX continues to work with manual entry if notification access is not granted.
+- **SMS permission** — grant or revoke SMS permission at any time. When granted, FinX receives incoming SMS messages for automatic transaction detection.
+- **Notification access** — grant or revoke notification access at any time. When granted, FinX reads transaction notifications from your SMS app for automatic detection.
+- Automatic tracking works when at least one of these sources is enabled. FinX continues to work with manual entry and pasted SMS if neither is enabled.
 - **App lock** — enable or disable biometric/PIN protection in Settings
 - **Screenshot protection** — enable or disable screen capture prevention in Settings
 - **Balance hiding** — hide or show account balances in the app interface
